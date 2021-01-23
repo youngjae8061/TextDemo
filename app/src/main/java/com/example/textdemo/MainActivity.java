@@ -1,5 +1,6 @@
 package com.example.textdemo;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -12,6 +13,15 @@ import android.provider.MediaStore;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
+
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.ml.vision.FirebaseVision;
+import com.google.firebase.ml.vision.common.FirebaseVisionImage;
+import com.google.firebase.ml.vision.text.FirebaseVisionText;
+import com.google.firebase.ml.vision.text.FirebaseVisionTextRecognizer;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -47,6 +57,28 @@ public class MainActivity extends AppCompatActivity {
         // imageView 에  이미지 설정
         img_id.setImageBitmap(bitmap);
         // 이미지 처리
-
+        // 1. 비트맵 객체로 FirebaseVisionImage 객체 생성하기
+        FirebaseVisionImage firebaseVisionImage = FirebaseVisionImage.fromBitmap(bitmap);
+        // 2. FirebaseVision 인스턴스 얻기
+        FirebaseVision firebaseVision = FirebaseVision.getInstance();
+        // 3. FirebaseVisionTextRecognizer의 인스턴스 생성
+        FirebaseVisionTextRecognizer firebaseVisionTextRecognizer = firebaseVision.getOnDeviceTextRecognizer();
+        // 4. 이미지 처리 task 생성
+        Task<FirebaseVisionText> task = firebaseVisionTextRecognizer.processImage(firebaseVisionImage);
+        // 5. task 성공했을 경우
+        task.addOnSuccessListener(new OnSuccessListener<FirebaseVisionText>() {
+            @Override
+            public void onSuccess(FirebaseVisionText firebaseVisionText) {
+                String s = firebaseVisionText.getText();
+                txt_id.setText(s);
+            }
+        });
+        // 6. task 실패했을 경우
+        task.addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+                Toast.makeText(getApplicationContext(), e.getMessage(), Toast.LENGTH_SHORT).show();
+            }
+        });
     }
 }
