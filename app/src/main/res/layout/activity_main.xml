@@ -13,10 +13,22 @@
         android:layout_height="wrap_content"/>
 
     <Button
-        android:id="@+id/btn_id"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:text="사 진 촬 영"
         android:onClick="doProcess"/>
+
+    <EditText
+        android:id="@+id/edt_id"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="여기에 결과가 출력됩니다..."/>
+
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="O K"
+        android:onClick="doText"/>
 
     <TextView
         android:id="@+id/txt_id"

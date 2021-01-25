@@ -12,6 +12,7 @@ import android.os.Bundle;
 import android.provider.MediaStore;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -26,6 +27,7 @@ import com.google.firebase.ml.vision.text.FirebaseVisionTextRecognizer;
 public class MainActivity extends AppCompatActivity {
 
     ImageView img_id;
+    EditText edt_id;
     TextView txt_id;
 
     @Override
@@ -33,6 +35,7 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         img_id = findViewById(R.id.img_id);
+        edt_id = findViewById(R.id.edt_id);
         txt_id = findViewById(R.id.txt_id);
 
         // 카메라에 대해 앱 수준 권한이 부여되었는지 확인
@@ -48,6 +51,10 @@ public class MainActivity extends AppCompatActivity {
         startActivityForResult(intent, 101);
     }
 
+    public void doText(View view) {
+        txt_id.setText(edt_id.getText().toString());
+    }
+    
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
@@ -70,7 +77,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onSuccess(FirebaseVisionText firebaseVisionText) {
                 String s = firebaseVisionText.getText();
-                txt_id.setText(s);
+                edt_id.setText(s);
             }
         });
         // 6. task 실패했을 경우
