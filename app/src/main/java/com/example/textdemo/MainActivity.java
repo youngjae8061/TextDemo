@@ -53,6 +53,7 @@ public class MainActivity extends AppCompatActivity {
 
     public void doText(View view) {
         txt_id.setText(edt_id.getText().toString());
+        Toast.makeText(MainActivity.this, edt_id.getText().toString(), Toast.LENGTH_SHORT).show();
     }
     
     @Override
